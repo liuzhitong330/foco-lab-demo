@@ -1,0 +1,16 @@
+neuron	class	color	chem_out	chem_in	electrical	total
+AVAR	Backward command	#c0392b	283	678	468	1429
+AVAL	Backward command	#c0392b	266	660	464	1390
+RIAR	Sensorimotor int.	#e67e22	452	424	14	890
+PVCR	Touch int.	#7f8c8d	164	260	438	862
+RIAL	Sensorimotor int.	#e67e22	400	434	16	850
+PVCL	Touch int.	#7f8c8d	153	282	330	765
+AVBL	Forward command	#1a5c8a	64	338	270	672
+AVBR	Forward command	#1a5c8a	57	335	278	670
+PVPL	Post. interneuron	#7f8c8d	66	48	486	600
+SABD	Motor neuron	#8e44ad	480	46	48	574
+SMDVL	Head motor	#8e44ad	362	169	40	571
+PVPR	Post. interneuron	#7f8c8d	77	29	456	562
+SMDVR	Head motor	#8e44ad	342	171	40	553
+AVER	Forward/rev int.	#27ae60	133	295	104	532
+AIZL	Interneuron	#16a085	249	216	64	529
