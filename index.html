@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>C. elegans Hub Neurons and the Working Memory Circuit — Cathy Liu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: Georgia, serif; max-width: 720px; margin: 0 auto;
+         padding: 2.5rem 1.5rem 4rem; line-height: 1.65; color: #222; background: #fff; }
+  h1, h2, h3 { font-family: -apple-system, system-ui, sans-serif; }
+  h1 { font-size: 1.45rem; margin-bottom: .2rem; }
+  .byline { font-family: system-ui, sans-serif; font-size: .85rem; color: #777; margin-bottom: 2rem; }
+  h2 { font-size: 1.1rem; margin-top: 2.5rem; border-bottom: 1px solid #eee; padding-bottom: .3rem; }
+  .note { background: #f6f6f4; border-left: 3px solid #999; padding: .8rem 1rem;
+          font-family: system-ui, sans-serif; font-size: .85rem; color: #444; margin: 1.2rem 0; }
+  figure { margin: 1.2rem 0; }
+  figure img { max-width: 100%; display: block; }
+  figcaption { font-family: system-ui, sans-serif; font-size: .78rem; color: #777; margin-top: .4rem; }
+  a { color: #2255aa; }
+  .meta { font-family: system-ui, sans-serif; font-size: .8rem; color: #888;
+          margin-top: 3rem; border-top: 1px solid #eee; padding-top: 1rem; }
+  .tag { display: inline-block; font-family: system-ui, sans-serif; font-size: .75rem;
+         background: #eef2f8; color: #2255aa; padding: .15rem .5rem;
+         border-radius: 3px; margin-right: .3rem; }
+  .highlight  { background: #fff5f5; border-left: 3px solid #c0392b; padding: .6rem 1rem;
+                font-family: system-ui, sans-serif; font-size: .88rem; margin: 1rem 0; }
+  .highlight2 { background: #f0f8ff; border-left: 3px solid #1a5c8a; padding: .6rem 1rem;
+                font-family: system-ui, sans-serif; font-size: .88rem; margin: 1rem 0; }
+  .highlight3 { background: #fff8f0; border-left: 3px solid #e67e22; padding: .6rem 1rem;
+                font-family: system-ui, sans-serif; font-size: .88rem; margin: 1rem 0; }
+</style>
+</head>
+<body>
+
+<h1>The C. elegans Connectome Predicts the Working Memory Circuit</h1>
+<div class="byline">Cathy Liu · cathyliu014@gmail.com · personal exploratory project, July 2026</div>
+
+<span class="tag">C. elegans</span>
+<span class="tag">connectome</span>
+<span class="tag">hub neurons</span>
+<span class="tag">working memory</span>
+<span class="tag">neural dynamics</span>
+<span class="tag">Python</span>
+
+<p style="margin-top:1.2rem">
+The
+<a href="https://www.focolab.org/" target="_blank">Kato lab (Focolab)</a>
+recently showed that short-term working memory in <em>C. elegans</em> is implemented by coupled
+oscillations between two distributed neural complexes — the backward command interneurons (AVA)
+and the head motor oscillators. The key finding from
+<a href="https://www.biorxiv.org/content/10.1101/2023.09.11.557066" target="_blank">Dunn et al.</a>:
+when the worm needs to hold a sensory memory before executing a turn, the phase relationship between
+these two oscillatory complexes encodes that memory.
+</p>
+
+<p>
+What struck me reading this is that both AVA and AVB (forward command) were already known as network
+hubs from connectome topology — long before anyone did whole-brain imaging. I re-analyzed the
+<em>C. elegans</em> hermaphrodite connectome from the
+<a href="https://github.com/openworm/c302" target="_blank">OpenWorm/c302 repository</a>
+(White et al. 1986, 4,681 chemical synapses and 2,698 electrical gap junctions) to ask: does
+connectivity structure predict which neurons should coordinate global brain dynamics?
+</p>
+
+<div class="note">
+<strong>What this is.</strong> Personal exploratory re-analysis of publicly available data, not novel research.
+Hermaphrodite connectome edgelist from
+<a href="https://github.com/openworm/c302/blob/master/c302/data/herm_full_edgelist.csv" target="_blank">OpenWorm/c302</a>
+(White et al. 1986; Varshney et al. 2011 revision). Degree centrality = total weighted synapse count
+(chemical outgoing + incoming + electrical). Non-neuronal entities (hyp, mu_*) excluded.
+</div>
+
+<h2>AVA and AVB are the top network hubs — by a wide margin</h2>
+
+<figure>
+  <img src="hub_neurons.svg?v=1"
+       alt="Bar chart of top 15 C. elegans hub neurons by weighted degree">
+  <figcaption>Top 15 neurons by total weighted degree centrality (chemical outgoing + incoming +
+  electrical gap junctions). Color = functional class. Bar shading: dark = chemical outgoing,
+  medium = chemical incoming, light = electrical. Data: White et al. 1986 via OpenWorm/c302.</figcaption>
+</figure>
+
+<div class="highlight">
+<strong>AVAR and AVAL (backward command interneurons) are the top two hubs, with total weighted
+degrees of 1,429 and 1,390 — more than 50% above the next tier.</strong>
+AVA neurons receive dense chemical input from sensory and interneurons, project broadly to motor
+neurons, and are coupled to most of the network via gap junctions. This topology makes them natural
+coordinators of global state changes — exactly the role Dunn et al. assign them in the working
+memory circuit. The connectome structure was always pointing at AVA; it took whole-brain imaging
+to show <em>how</em> that connectivity produces oscillatory memory storage.
+</div>
+
+<div class="highlight2">
+<strong>AVBL and AVBR (forward command interneurons) rank 7th and 8th despite being on the
+opposite side of the behavioral decision from AVA.</strong>
+In the working memory paper, AVA and AVB form the two poles of a coupled oscillatory system.
+The connectome shows why: both are deep in the hub tier, with overlapping but complementary
+connectivity profiles. AVA has more incoming chemical weight (660 vs. 338 for AVB), while
+AVB has a different gap junction pattern — structural asymmetries that likely underlie their
+distinct phase roles in the memory circuit.
+</div>
+
+<h2>AVA/AVB are chemical hubs; other neurons rely more on electrical coupling</h2>
+
+<figure>
+  <img src="synapse_scatter.svg?v=1"
+       alt="Scatter of chemical vs electrical synapse weight for top 60 neurons">
+  <figcaption>Total chemical synapse weight (outgoing + incoming) vs. electrical gap junction weight
+  for the top 60 neurons by total degree. Each dot is one neuron; labeled neurons are key circuit
+  members from the Kato lab's work. Data: White et al. 1986 via OpenWorm/c302.</figcaption>
+</figure>
+
+<div class="highlight3">
+<strong>RIA interneurons (RIAR, RIAL) stand out as pure chemical hubs with very little electrical
+coupling — in contrast to PVC and PVP neurons that combine moderate chemical with strong
+electrical connectivity.</strong>
+RIA neurons are sensorimotor integrators that modulate head direction during forward locomotion.
+The Kato lab's 2015 <em>Cell</em> paper (<em>Global brain dynamics embed the motor command
+sequence of C. elegans</em>) identified RIA as a key participant in the motor manifold. The
+purely chemical connectivity of RIA suggests it functions as a directed signal integrator,
+not a state synchronizer — which fits its role in translating motor commands into smooth
+head oscillation rather than coordinating global state switches.
+</div>
+
+<h2>Connection to the lab's work</h2>
+<ul>
+<li>
+<strong>Working memory paper (Dunn et al.):</strong> This analysis takes the specific neurons
+identified in the working memory circuit and asks what their structural position in the connectome
+predicts about their function. The answer — AVA is a chemical hub with massive incoming drive,
+AVB is a coupled hub with different balance — is consistent with their distinct oscillatory roles.
+Connecting structural and dynamical data is the kind of analysis I'd want to extend with
+the lab's whole-brain imaging datasets.
+</li>
+<li>
+<strong>Hub neurons paper:</strong> The lab published on hub neurons and non-local connectivity
+features in global dynamics. This re-analysis is a simpler version of that question using only
+weighted degree — the next step would be to compute betweenness centrality and compare with the
+lab's more sophisticated network features, using the full imaging data to validate structural
+predictions.
+</li>
+<li>
+<strong>Tardigrade systems neuroscience:</strong> The lab's push to establish tardigrades as a
+model organism is exciting from a comparative angle. I'd be curious to help develop analysis
+tools for tardigrade whole-brain data, particularly if it involves adapting the neuron
+identification and manifold analysis approaches the lab already has for <em>C. elegans</em>.
+</li>
+<li>
+On the experimental side, I have hands-on experience with mammalian cell culture, fluorescence
+microscopy, flow cytometry, and RNA/protein-level assays. I'm comfortable contributing on
+both the bench and computational sides of the work.
+</li>
+</ul>
+
+<h2>Methods</h2>
+<p>
+Data downloaded July 2026 from
+<a href="https://raw.githubusercontent.com/openworm/c302/master/c302/data/herm_full_edgelist.csv" target="_blank">OpenWorm/c302</a>
+(<code>herm_full_edgelist.csv</code>; White et al. 1986; Varshney et al. 2011).
+4,681 chemical synapses and 2,698 electrical gap junctions in the adult hermaphrodite.
+Weighted degree = sum of all synapse weights (chemical outgoing + chemical incoming + electrical)
+per neuron. Non-neuronal targets (hyp, mu_*) excluded. Top 60 neurons by total degree shown in
+Figure 2. Neuron functional class annotations from WormAtlas and Kato lab publications.
+Figures: pure Python SVG. Code:
+<a href="fetch_data.py">fetch_data.py</a>, <a href="make_figures.py">make_figures.py</a>.
+Raw data: <a href="connectivity.tsv">connectivity.tsv</a>,
+<a href="hub_neurons.tsv">hub_neurons.tsv</a>.
+</p>
+
+<div class="meta">
+Cathy Liu — cathyliu014@gmail.com | 415-216-3799<br>
+<a href="https://liuzhitong330.github.io/tvb-llm-robust-neurostim/" target="_blank">Epilepsy neurostimulation project</a> ·
+<a href="https://arxiv.org/abs/2606.04339" target="_blank">arXiv:2606.04339</a>
+</div>
+
+</body>
+</html>
